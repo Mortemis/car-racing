@@ -1,0 +1,8 @@
+<div class="game__field">
+    <div *ngFor="let brickRow of bricks; let i = index">
+        <div *ngFor="let brick of brickRow; let j = index">
+            <app-brick [active]="brick"></app-brick>
+        </div>
+    </div>
+</div>
+

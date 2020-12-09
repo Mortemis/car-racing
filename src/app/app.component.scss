@@ -1,0 +1,10 @@
+$color-back: #a2b6ab;
+
+.game {
+    display: flex;
+    
+    border: 3px solid black;
+    background-color: $color-back;
+    width: 20rem;
+    height: 30rem;
+}
