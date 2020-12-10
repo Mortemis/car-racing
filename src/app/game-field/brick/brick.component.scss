@@ -1,4 +1,4 @@
-$brick-size: 12px;
+$brick-size: 16px;
 
 $color-inactive: #8f9e99;
 $color-back: #a2b6ab;
@@ -8,7 +8,7 @@ $color-back: #a2b6ab;
     width: $brick-size;
     height: $brick-size;
     margin: 1px;
-
+    
     border: 2px solid black;
     background: $color-back;
 }

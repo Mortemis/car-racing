@@ -5,6 +5,14 @@ $color-back: #a2b6ab;
     
     border: 3px solid black;
     background-color: $color-back;
-    width: 20rem;
-    height: 30rem;
+    width: fit-content;
+    //height: 30rem;
+}
+
+.game__sidebar {
+    display: flex;
+    flex-direction: column;
+
+    width: fit-content;
+    height: 100%;
 }

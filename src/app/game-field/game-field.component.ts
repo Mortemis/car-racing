@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameMasterService } from '../game-master.service';
 
 @Component({
   selector: 'app-game-field',
@@ -9,18 +10,23 @@ export class GameFieldComponent implements OnInit {
 
   public bricks: boolean[][];
 
-  constructor() {
+  constructor(private gm: GameMasterService) {
     this.bricks = [];
 
     for (let i = 0; i < 10; i++) {
       this.bricks[i] = [];
       for (let j = 0; j < 20; j++) {
-        this.bricks[i][j] = true;
+        this.bricks[i][j] = false;
       }
     }
    }
 
   ngOnInit(): void {
+    this.gm.enableDebugMode();
+    this.gm.applyCarImage(this.bricks, 'left');
+    this.gm.carMoved.subscribe((position: string) => {
+      this.gm.applyCarImage(this.bricks, position);
+    });
   }
 
 }

@@ -1,1 +1,7 @@
-<p>hp-panel works!</p>
+<div class="game__hp-panel">
+    <div *ngFor="let brickRow of hpBricks; let i = index">
+        <div *ngFor="let brick of brickRow; let j = index">
+            <app-brick [active]="brick"></app-brick>
+        </div>
+    </div>
+</div>

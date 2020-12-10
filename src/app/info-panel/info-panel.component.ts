@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InfoPanelComponent implements OnInit {
 
+  speed: number = 0;
+  goal: number = 0;
+
   constructor() { }
 
   ngOnInit(): void {
