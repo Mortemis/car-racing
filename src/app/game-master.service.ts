@@ -1,4 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { Observable, of, scheduled, timer } from 'rxjs';
+import { timeout } from 'rxjs/operators'
 import { EnemyCar } from './enemy-car.model';
 
 @Injectable({
@@ -11,8 +13,10 @@ export class GameMasterService {
   currentPosition: string = 'right';
   isSFXOn = true;
 
-
   private enemies: EnemyCar[] = [];
+
+  private enemySpawnInterval = 10;
+  private enemySpawnCounter = 0;
 
   carMoved = new EventEmitter<string>();
   enemyPassed = new EventEmitter<void>();     //increase score & increase goal
@@ -122,6 +126,13 @@ export class GameMasterService {
         i--;
       } 
     }
+    this.enemySpawnCounter++;
+    if (this.enemySpawnCounter >= this.enemySpawnInterval) {
+      this.enemies.push(new EnemyCar((Math.random() > 0.5) ? 1 : 0));
+      this.enemySpawnCounter = 0;
+    }
+    
+    setTimeout(this.tick.bind(this), 100);
   }
 
   constructor() { }
