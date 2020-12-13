@@ -23,10 +23,13 @@ export class GameFieldComponent implements OnInit {
 
   ngOnInit(): void {
     this.gm.enableDebugMode();
-    this.gm.applyCarImage(this.bricks, 'left');
+    this.gm.field = this.bricks;
+    this.gm.applyCarImage('left');
     this.gm.carMoved.subscribe((position: string) => {
-      this.gm.applyCarImage(this.bricks, position);
+      this.gm.applyCarImage(position);
     });
+
+    this.gm.createEnemy();
   }
 
 }
