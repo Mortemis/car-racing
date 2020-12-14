@@ -18,7 +18,9 @@ export class GameMasterService {
 
   private tickSpeed = 0;
   private roadPosition = 3;
-  
+  private gamePaused = false;
+  private gameStopped = true;
+
   public carMoved = new EventEmitter<string>();
   public enemyPassed = new EventEmitter<void>();     //increase score & increase goal
   public enemyCollided = new EventEmitter<void>();   //decrease hp or lose if hp = 1
@@ -65,7 +67,8 @@ export class GameMasterService {
         console.log('Mute sfx');
         break;
 
-      case 'x':
+      case ' ':
+        this.gameStopped = false;
         this.tick();
         break;
     }
@@ -141,27 +144,75 @@ export class GameMasterService {
     return Math.floor(progress / 10) + 1;
   }
 
-  public tick() {
-    this.applyRoadImage();
+  /**
+   * Recursive function
+   * @param y start with value of 19
+   */
+  private clearFieldAnimation(y: number) {
+    for (let x = 0; x < 10; x++) {
+      this.field[x][y] = true;
+    }
+    if (y <= 0) {
+      setTimeout(this.clearFieldAnimationEnd.bind(this), 50, [y]); 
+      this.enemies = [];
+    }
+    else setTimeout(this.clearFieldAnimation.bind(this), 50, [y - 1]);
+  }
 
-    for (let i = 0; i < this.enemies.length; i++) {
-      this.applyEnemyImage(this.enemies[i]);
-      this.enemies[i].move();
-      if (this.enemies[i].yPosition >= 20) {
-        this.enemies.splice(i, 1);
-        this.enemyPassed.emit(); 
-        i--;
-      } 
+  private clearFieldAnimationEnd(y: number) {
+    for (let x = 0; x < 10; x++) {
+      this.field[x][y] = false;
     }
-    this.enemySpawnCounter++;
-    if (this.enemySpawnCounter >= this.enemySpawnInterval) {
-      this.enemies.push(new EnemyCar((Math.random() > 0.5) ? 1 : 0));
-      this.enemySpawnCounter = 0;
+    console.log('y:'+ y)
+    if (y < 19) setTimeout(this.clearFieldAnimationEnd.bind(this), 50, [+y + 1]);
+    else this.onAnimationEnd();
+  }
+
+  private onAnimationEnd() {
+    this.gamePaused = false;
+    this.currentPosition = 'right';
+    this.applyCarImage('left');
+    this.applyRoadImage();
+  }
+
+  public tick() {
+    if (this.gameStopped) return;
+    if (!this.gamePaused) {
+      this.applyRoadImage();
+
+      for (let i = 0; i < this.enemies.length; i++) {
+        this.applyEnemyImage(this.enemies[i]);
+        this.enemies[i].move();
+        if (this.enemies[i].yPosition >= 20) {
+          this.enemies.splice(i, 1);
+          this.enemyPassed.emit();
+          i--;
+        }
+      }
+      this.enemySpawnCounter++;
+      if (this.enemySpawnCounter >= this.enemySpawnInterval) {
+        this.enemies.push(new EnemyCar((Math.random() > 0.5) ? 1 : 0));
+        this.enemySpawnCounter = 0;
+      }
     }
-    
     setTimeout(this.tick.bind(this), 100 - this.tickSpeed);
   }
 
-  constructor() { }
+  constructor() {
+    this.enemyCollided.subscribe(() => {
+      this.gamePaused = true;
+      this.clearFieldAnimation(19);
+    });
 
+    this.gameLost.subscribe(() => {
+      this.tickSpeed = 0;
+      this.gameStopped = true;
+    });
+
+    this.gameWon.subscribe(() => {
+      this.enemyCollided.emit();
+      this.tickSpeed = 0;
+      this.gameStopped = true;
+    })
+   }
 }

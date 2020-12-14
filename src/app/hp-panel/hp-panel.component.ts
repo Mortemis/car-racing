@@ -33,6 +33,16 @@ export class HpPanelComponent implements OnInit {
         this.gm.gameLost.emit();
       }
     });
+
+    this.gm.gameLost.subscribe(() => {
+      this.currentHp = 4;
+      this.setHp(this.currentHp);
+    });
+
+    this.gm.gameWon.subscribe(() => {
+      this.currentHp = 4;
+      this.setHp(this.currentHp);
+    });
   }
 
   public setHp(hp: number) {

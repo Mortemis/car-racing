@@ -19,5 +19,15 @@ export class InfoPanelComponent implements OnInit {
       if (this.goal >= 50) this.gm.gameWon.emit();
       this.speed = this.gm.setTickSpeed(this.goal); 
     });
+
+    this.gm.gameLost.subscribe(() => {
+      this.goal = 0;
+      this.speed = 1;
+    });
+
+    this.gm.gameLost.subscribe(() => {
+      this.goal = 0;
+      this.speed = 1;
+    });
   }
 }
