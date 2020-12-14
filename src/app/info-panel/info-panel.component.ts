@@ -8,7 +8,7 @@ import { GameMasterService } from '../game-master.service';
 })
 export class InfoPanelComponent implements OnInit {
 
-  speed: number = 0;
+  speed: number = 1;
   goal: number = 0;
 
   constructor(private gm: GameMasterService) { }
@@ -17,7 +17,7 @@ export class InfoPanelComponent implements OnInit {
     this.gm.enemyPassed.subscribe(() => {
       this.goal += 1;
       if (this.goal >= 50) this.gm.gameWon.emit();
+      this.speed = this.gm.setTickSpeed(this.goal); 
     });
   }
-
 }

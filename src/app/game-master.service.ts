@@ -1,6 +1,4 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable, of, scheduled, timer } from 'rxjs';
-import { timeout } from 'rxjs/operators'
 import { EnemyCar } from './enemy-car.model';
 
 @Injectable({
@@ -17,6 +15,8 @@ export class GameMasterService {
 
   private enemySpawnInterval = 10;
   private enemySpawnCounter = 0;
+
+  private tickSpeed = 0;
 
   carMoved = new EventEmitter<string>();
   enemyPassed = new EventEmitter<void>();     //increase score & increase goal
@@ -116,6 +116,16 @@ export class GameMasterService {
     else this.enemies.push(new EnemyCar(1));
   }
 
+  /**
+   * 
+   * @param progress (goal)
+   * @returns speed for component
+   */
+  public setTickSpeed(progress: number) {
+    this.tickSpeed = Math.floor(progress / 10) * 10;
+    return Math.floor(progress / 10) + 1;
+  }
+
   public tick() {
     for (let i = 0; i < this.enemies.length; i++) {
       this.applyEnemyImage(this.enemies[i]);
@@ -132,7 +142,7 @@ export class GameMasterService {
       this.enemySpawnCounter = 0;
     }
     
-    setTimeout(this.tick.bind(this), 100);
+    setTimeout(this.tick.bind(this), 100 - this.tickSpeed);
   }
 
   constructor() { }
