@@ -5,7 +5,6 @@ $border-size: 3px;
 $color-inactive: #8f9e99;
 $color-back: #a2b6ab;
 
-
 .brick {
     width: $brick-size;
     height: $brick-size;
@@ -13,16 +12,12 @@ $color-back: #a2b6ab;
     
     border: $border-size solid black;
     background: $color-back;
-
-    justify-content: center;
 }
 
 .brick__inner {
     width: $brick-inner-size;
-    height: $brick-inner-size;
-    
+    height: $brick-inner-size;    
     margin: 2px;
-
     background: black; 
 }
 
