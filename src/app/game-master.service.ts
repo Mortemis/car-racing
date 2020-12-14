@@ -231,5 +231,9 @@ export class GameMasterService {
     this.sfxToggled.subscribe(() => {
       this.soundService.toggleSound();
     });
+
+    this.gameStarted.subscribe(() => {
+      this.soundService.playSound(Sounds.Start);
+    });
    }
 }

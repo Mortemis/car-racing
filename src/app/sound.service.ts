@@ -4,7 +4,8 @@ export enum Sounds {
   Collide = '../assets/collide.wav',
   Lose = '../assets/lose.wav',
   Win = '../assets/win.wav',
-  Pass = '../assets/pass.wav'
+  Pass = '../assets/pass.wav',
+  Start = '../assets/start.wav'
 }
 
 @Injectable({
