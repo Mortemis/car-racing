@@ -17,14 +17,15 @@ export class GameMasterService {
   private enemySpawnCounter = 0;
 
   private tickSpeed = 0;
+  private roadPosition = 3;
+  
+  public carMoved = new EventEmitter<string>();
+  public enemyPassed = new EventEmitter<void>();     //increase score & increase goal
+  public enemyCollided = new EventEmitter<void>();   //decrease hp or lose if hp = 1
+  public gameWon = new EventEmitter<void>();
+  public gameLost = new EventEmitter<void>();
 
-  carMoved = new EventEmitter<string>();
-  enemyPassed = new EventEmitter<void>();     //increase score & increase goal
-  enemyCollided = new EventEmitter<void>();   //decrease hp or lose if hp = 1
-  gameWon = new EventEmitter<void>();
-  gameLost = new EventEmitter<void>();
-
-  carImage = [
+  private carImage = [
     [false, true, false],
     [true, true, true],
     [false, true, false],
@@ -111,6 +112,20 @@ export class GameMasterService {
         }
   }
 
+  public applyRoadImage() {
+    for (let y = 0; y < 20; y++) {
+      if ((y + this.roadPosition) % 4 === 0) {
+        this.field[0][y] = false;
+        this.field[9][y] = false;
+      } else {
+        this.field[0][y] = true;
+        this.field[9][y] = true;
+      }
+    }
+    this.roadPosition--;
+    if (this.roadPosition < 0) this.roadPosition = 3;
+  }
+
   public createEnemy() {
     if (Math.random() > 0.5) this.enemies.push(new EnemyCar(0));
     else this.enemies.push(new EnemyCar(1));
@@ -127,6 +142,8 @@ export class GameMasterService {
   }
 
   public tick() {
+    this.applyRoadImage();
+
     for (let i = 0; i < this.enemies.length; i++) {
       this.applyEnemyImage(this.enemies[i]);
       this.enemies[i].move();
