@@ -48,7 +48,7 @@ export class GameMasterService {
       case 'A':
       case 'ф':
       case 'Ф':
-        this.carMoved.emit('left');
+        if (!this.gameStopped && !this.gamePaused) this.carMoved.emit('left');
         break;
 
       case 'ArrowRight':
@@ -56,7 +56,7 @@ export class GameMasterService {
       case 'D':
       case 'в':
       case 'В':
-        this.carMoved.emit('right');
+        if (!this.gameStopped && !this.gamePaused) this.carMoved.emit('right');
         break;
 
       case 'm':
@@ -68,8 +68,10 @@ export class GameMasterService {
         break;
 
       case ' ':
-        this.gameStopped = false;
-        this.tick();
+        if (this.gameStopped) {
+          this.gameStopped = false;
+          this.tick();
+        }
         break;
     }
   }

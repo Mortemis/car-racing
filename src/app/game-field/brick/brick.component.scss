@@ -1,4 +1,6 @@
-$brick-size: 16px;
+$brick-size: 24px;
+$brick-inner-size: 14px;
+$border-size: 3px;
 
 $color-inactive: #8f9e99;
 $color-back: #a2b6ab;
@@ -9,11 +11,26 @@ $color-back: #a2b6ab;
     height: $brick-size;
     margin: 1px;
     
-    border: 2px solid black;
+    border: $border-size solid black;
+    background: $color-back;
+
+    justify-content: center;
+}
+
+.brick__inner {
+    width: $brick-inner-size;
+    height: $brick-inner-size;
+    
+    margin: 2px;
+
+    background: black; 
+}
+
+.brick-inactive {
+    border: $border-size solid $color-inactive;
     background: $color-back;
 }
 
-.inactive {
-    border: 2px solid $color-inactive;
-    background: $color-back;
+.brick__inner-inactive {
+    background: $color-inactive;
 }

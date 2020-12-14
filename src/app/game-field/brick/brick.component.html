@@ -1,3 +1,3 @@
-<div class="brick" [ngClass]="{ 'inactive': active === false }">
-    <div class="brick__inner"></div>
+<div class="brick" [ngClass]="{ 'brick-inactive': active === false }">
+    <div class="brick__inner" [ngClass]="{ 'brick__inner-inactive': active === false }"></div>
 </div>
