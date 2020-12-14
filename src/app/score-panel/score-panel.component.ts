@@ -18,6 +18,10 @@ export class ScorePanelComponent implements OnInit {
       this.score += 100;
       if (this.score > this.highScore) this.highScore = this.score;
     });
+
+    this.gm.gameLost.subscribe(() => {
+      this.score = 0;
+    });
   }
 
 }

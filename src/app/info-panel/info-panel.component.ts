@@ -16,8 +16,8 @@ export class InfoPanelComponent implements OnInit {
   ngOnInit(): void {
     this.gm.enemyPassed.subscribe(() => {
       this.goal += 1;
-      if (this.goal >= 50) this.gm.gameWon.emit();
       this.speed = this.gm.setTickSpeed(this.goal); 
+      if (this.goal >= 50) this.gm.gameWon.emit();
     });
 
     this.gm.gameLost.subscribe(() => {
@@ -25,7 +25,7 @@ export class InfoPanelComponent implements OnInit {
       this.speed = 1;
     });
 
-    this.gm.gameLost.subscribe(() => {
+    this.gm.gameWon.subscribe(() => {
       this.goal = 0;
       this.speed = 1;
     });

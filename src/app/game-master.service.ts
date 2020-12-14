@@ -163,7 +163,7 @@ export class GameMasterService {
     for (let x = 0; x < 10; x++) {
       this.field[x][y] = false;
     }
-    console.log('y:'+ y)
+    
     if (y < 19) setTimeout(this.clearFieldAnimationEnd.bind(this), 50, [+y + 1]);
     else this.onAnimationEnd();
   }
