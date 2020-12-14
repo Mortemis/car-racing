@@ -7,6 +7,7 @@ import { BrickComponent } from './game-field/brick/brick.component';
 import { ScorePanelComponent } from './score-panel/score-panel.component';
 import { HpPanelComponent } from './hp-panel/hp-panel.component';
 import { InfoPanelComponent } from './info-panel/info-panel.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { InfoPanelComponent } from './info-panel/info-panel.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [ CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
