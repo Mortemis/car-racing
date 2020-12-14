@@ -1,9 +1,8 @@
+@import '../../../styles.scss';
+
 $brick-size: 24px;
 $brick-inner-size: 14px;
 $border-size: 3px;
-
-$color-inactive: #8f9e99;
-$color-back: #a2b6ab;
 
 .brick {
     width: $brick-size;
@@ -11,7 +10,7 @@ $color-back: #a2b6ab;
     margin: 1px;
     
     border: $border-size solid black;
-    background: $color-back;
+    background: $color-bg;
 }
 
 .brick__inner {
@@ -23,7 +22,7 @@ $color-back: #a2b6ab;
 
 .brick-inactive {
     border: $border-size solid $color-inactive;
-    background: $color-back;
+    background: $color-bg;
 }
 
 .brick__inner-inactive {

@@ -11,6 +11,8 @@ export class InfoPanelComponent implements OnInit {
   speed: number = 1;
   goal: number = 0;
 
+  sfxEnabled: boolean = true;
+
   constructor(private gm: GameMasterService) { }
 
   ngOnInit(): void {
@@ -28,6 +30,10 @@ export class InfoPanelComponent implements OnInit {
     this.gm.gameWon.subscribe(() => {
       this.goal = 0;
       this.speed = 1;
+    });
+
+    this.gm.sfxToggled.subscribe(() => {
+      this.sfxEnabled = !this.sfxEnabled;
     });
   }
 }

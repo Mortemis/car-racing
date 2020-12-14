@@ -1,8 +1,16 @@
-<div class="game" >
-  <app-game-field></app-game-field>
-  <div class="game__sidebar">
-    <app-score-panel></app-score-panel>
-    <app-hp-panel></app-hp-panel>
-    <app-info-panel></app-info-panel>
+<div class="container">
+  <div class="game">
+    <app-game-field></app-game-field>
+    <div class="game__sidebar">
+      <app-score-panel></app-score-panel>
+      <app-hp-panel></app-hp-panel>
+      <app-info-panel></app-info-panel>
+    </div>
+  </div>
+  <div>
+    <p class="controls">{{ description }}<br>
+    Press M to mute sound<br>
+    Arrows or A/D to move car
+    </p>
   </div>
 </div>

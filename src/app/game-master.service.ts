@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { EnemyCar } from './enemy-car.model';
+import { Sounds, SoundService } from './sound.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,6 @@ export class GameMasterService {
   public field: boolean[][];
 
   currentPosition: string = 'right';
-  isSFXOn = true;
-
   private enemies: EnemyCar[] = [];
 
   private enemySpawnInterval = 10;
@@ -21,11 +20,13 @@ export class GameMasterService {
   private gamePaused = false;
   private gameStopped = true;
 
+  public gameStarted = new EventEmitter<void>();
   public carMoved = new EventEmitter<string>();
   public enemyPassed = new EventEmitter<void>();     //increase score & increase goal
   public enemyCollided = new EventEmitter<void>();   //decrease hp or lose if hp = 1
   public gameWon = new EventEmitter<void>();
   public gameLost = new EventEmitter<void>();
+  public sfxToggled = new EventEmitter<void>();
 
   private carImage = [
     [false, true, false],
@@ -35,10 +36,12 @@ export class GameMasterService {
   ];
 
   public enableDebugMode() {
+    this.gameStarted.subscribe(() => console.log('[D] Game started.'));
     this.enemyCollided.subscribe(() => console.log('[D] Enemy collided.'));
     this.enemyPassed.subscribe(() => console.log('[D] Enemy passed.'));
     this.gameWon.subscribe(() => console.log('[D] Game won.'));
     this.gameLost.subscribe(() => console.log('[D] Game lost.'));
+    this.sfxToggled.subscribe(() => console.log('[D] SFX toggled.'));
   }
 
   public handleKeyPressed(key: string) {
@@ -63,13 +66,13 @@ export class GameMasterService {
       case 'M':
       case 'ь':
       case 'Ь':
-        this.isSFXOn = !this.isSFXOn;
-        console.log('Mute sfx');
+        this.sfxToggled.emit();
         break;
 
       case ' ':
         if (this.gameStopped) {
           this.gameStopped = false;
+          this.gameStarted.emit();
           this.tick();
         }
         break;
@@ -200,21 +203,33 @@ export class GameMasterService {
     setTimeout(this.tick.bind(this), 100 - this.tickSpeed);
   }
 
-  constructor() {
+  constructor(private soundService: SoundService) {
+    this.enemyPassed.subscribe(() => {
+      soundService.playSound(Sounds.Pass);
+    });
+
     this.enemyCollided.subscribe(() => {
       this.gamePaused = true;
       this.clearFieldAnimation(19);
+      soundService.playSound(Sounds.Collide);
     });
 
     this.gameLost.subscribe(() => {
       this.tickSpeed = 0;
       this.gameStopped = true;
+      soundService.playSound(Sounds.Lose)
     });
 
     this.gameWon.subscribe(() => {
-      this.enemyCollided.emit();
+      this.gamePaused = true;
+      this.clearFieldAnimation(19);
       this.tickSpeed = 0;
       this.gameStopped = true;
-    })
+      soundService.playSound(Sounds.Win);
+    });
+
+    this.sfxToggled.subscribe(() => {
+      this.soundService.toggleSound();
+    });
    }
 }

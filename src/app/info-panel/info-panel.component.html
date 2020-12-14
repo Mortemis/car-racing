@@ -1,5 +1,6 @@
 <div class="game__info-panel">
     <p>Speed <br> {{speed}}</p>
     <p>Goal <br> {{goal}}/50</p>
+    <p [ngClass]="{ 'inactive': sfxEnabled === false }">sound</p>
 </div>
     

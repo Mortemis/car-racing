@@ -1,3 +1,9 @@
+@import '../../styles.scss';
+
 .game__info-panel {
     text-align: center;
+}
+
+.inactive {
+    color: $color-inactive;
 }
